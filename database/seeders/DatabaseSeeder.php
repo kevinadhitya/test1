@@ -21,8 +21,8 @@ class DatabaseSeeder extends Seeder
 
         // 2. Create 10 dummy appointments for the admin so the list page has data
         // Tapi TIDAK ADA dummy users lain, sehingga dropdown Invitees kosong/bersih.
-        \App\Models\Appointment::factory(10)->create([
-            'creator_id' => $admin->id
+        Appointment::factory(10)->create([
+            'creator_id' => $admin->id,
         ]);
     }
 }

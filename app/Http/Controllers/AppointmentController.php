@@ -6,9 +6,8 @@ use App\Http\Requests\StoreAppointmentRequest;
 use App\Http\Resources\AppointmentResource;
 use App\Models\Appointment;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
 use Carbon\Carbon;
+use Inertia\Inertia;
 
 class AppointmentController extends Controller
 {
@@ -19,7 +18,7 @@ class AppointmentController extends Controller
         // Eager load creator & invitees to avoid N+1 queries.
         $appointments = Appointment::with(['creator', 'invitees'])
             ->where('creator_id', $user->id)
-            ->orWhereHas('invitees', function($q) use ($user) {
+            ->orWhereHas('invitees', function ($q) use ($user) {
                 $q->where('user_id', $user->id);
             })
             ->orderBy('start', 'asc')
@@ -37,7 +36,7 @@ class AppointmentController extends Controller
         $users = User::where('id', '!=', auth()->id())->get(['id', 'name', 'username', 'preferred_timezone']);
 
         return Inertia::render('Appointments/Create', [
-            'users' => $users
+            'users' => $users,
         ]);
     }
 

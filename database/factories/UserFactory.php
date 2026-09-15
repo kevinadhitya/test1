@@ -10,13 +10,13 @@ class UserFactory extends Factory
     public function definition(): array
     {
         $timezones = [
-            'Asia/Jakarta', 
-            'Asia/Tokyo', 
-            'Europe/London', 
-            'America/New_York', 
-            'UTC', 
-            'Asia/Singapore', 
-            'Australia/Sydney'
+            'Asia/Jakarta',
+            'Asia/Tokyo',
+            'Europe/London',
+            'America/New_York',
+            'UTC',
+            'Asia/Singapore',
+            'Australia/Sydney',
         ];
 
         return [

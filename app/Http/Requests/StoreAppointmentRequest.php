@@ -38,13 +38,13 @@ class StoreAppointmentRequest extends FormRequest
             // Collect participants
             $userIds = $this->invitees ?? [];
             $userIds[] = $this->user()->id; // Creator is always a participant
-            
+
             // Get unique participants
             $participants = User::whereIn('id', array_unique($userIds))->get();
 
             foreach ($participants as $user) {
                 $tz = $user->preferred_timezone ?? 'UTC';
-                
+
                 // Convert UTC back to participant's local time
                 $localStart = $startUtc->copy()->timezone($tz);
                 $localEnd = $endUtc->copy()->timezone($tz);
@@ -52,6 +52,7 @@ class StoreAppointmentRequest extends FormRequest
                 // 1. Check Same Day Constraint
                 if ($localStart->toDateString() !== $localEnd->toDateString()) {
                     $validator->errors()->add('start', "Jadwal melintasi hari untuk user {$user->name} ({$tz}). Jadwal harus selesai di hari yang sama.");
+
                     return; // Fail fast
                 }
 
@@ -61,9 +62,10 @@ class StoreAppointmentRequest extends FormRequest
 
                 if ($localStart->lt($startLimit) || $localEnd->gt($endLimit)) {
                     $validator->errors()->add(
-                        'start', 
+                        'start',
                         "Waktu berada di luar jam kerja (08:00-17:00) untuk {$user->name} pada zona waktu lokal mereka ({$tz})."
                     );
+
                     return; // Fail fast
                 }
             }
